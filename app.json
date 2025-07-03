@@ -31,14 +31,24 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shashankraj007281.clockwork"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.shashankraj007281.clockwork"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "90ffc806-cd5b-4a58-b5af-464b2546fad2"
       }
     }
   }
