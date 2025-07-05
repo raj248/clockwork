@@ -1,19 +1,35 @@
-import { Stack, Link } from 'expo-router';
-
-import { Button } from '~/components/Button';
-import { Container } from '~/components/Container';
-import { ScreenContent } from '~/components/ScreenContent';
+import React from 'react'
+import { FlatList, View } from 'react-native'
+import { ProjectCard } from '~/components/ProjectCard'
+import { useProjectStore } from '~/stores/projectStore'
+import { Stack } from 'expo-router'
+import { Text, useTheme } from 'react-native-paper'
+import { GlobalFAB } from '~/components/GlobalFAB'
 
 export default function Home() {
+  const projects = useProjectStore((state) => state.projects)
+  const theme = useTheme()
   return (
     <>
-      <Stack.Screen options={{ title: 'Home' }} />
-      <Container>
-        <ScreenContent path="app/index.tsx" title="Home"></ScreenContent>
-        <Link href={{ pathname: '/details', params: { name: 'Dan' } }} asChild>
-          <Button title="Show Details" />
-        </Link>
-      </Container>
+      <Stack.Screen options={{ title: 'Clockwork Projects' }} />
+
+      <FlatList
+        data={projects}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <ProjectCard project={item} />}
+        ListEmptyComponent={
+          <View className="items-center mt-10">
+            <Text
+              variant="bodyMedium"
+              style={{ color: theme.colors.outline }}
+            >
+              No projects yet. Add a project to get started.
+            </Text>
+          </View>
+        }
+        contentContainerStyle={{ paddingVertical: 8 }}
+      />
+      <GlobalFAB />
     </>
-  );
+  )
 }
