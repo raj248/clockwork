@@ -10,7 +10,7 @@ export default function Home() {
   const projects = useProjectStore((state) => state.projects)
   const theme = useTheme()
   return (
-    <View>
+    <View className="flex-1" style={{ backgroundColor: theme.colors.background }}>
       <Stack.Screen options={{ title: 'Clockwork Projects' }} />
       <Clock />
       <FlatList
