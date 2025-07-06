@@ -6,6 +6,7 @@ import { useThemeStore } from '~/stores/themeStore';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect } from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
+import { GlobalFAB } from '~/components/GlobalFAB'
 
 export default function RootLayout() {
   const isDark = useThemeStore((state) => state.isDark);
@@ -29,12 +30,15 @@ export default function RootLayout() {
             headerTitleStyle: {
               color: theme.colors.onSurface,
             },
+            headerShown: false,
           }}
         >
           <Stack.Screen name="index" options={{ title: 'Home' }} />
           <Stack.Screen name="settings" options={{ title: 'Settings' }} />
           <Stack.Screen name="details" options={{ title: 'Details' }} />
         </Stack>
+        <GlobalFAB />
+
       </SafeAreaView>
     </PaperProvider>
   );

@@ -4,15 +4,15 @@ import { ProjectCard } from '~/components/ProjectCard'
 import { useProjectStore } from '~/stores/projectStore'
 import { Stack } from 'expo-router'
 import { Text, useTheme } from 'react-native-paper'
-import { GlobalFAB } from '~/components/GlobalFAB'
+import { Clock } from '~/components/Clock'
 
 export default function Home() {
   const projects = useProjectStore((state) => state.projects)
   const theme = useTheme()
   return (
-    <>
+    <View>
       <Stack.Screen options={{ title: 'Clockwork Projects' }} />
-
+      <Clock />
       <FlatList
         data={projects}
         keyExtractor={(item) => item.id}
@@ -29,7 +29,6 @@ export default function Home() {
         }
         contentContainerStyle={{ paddingVertical: 8 }}
       />
-      <GlobalFAB />
-    </>
+    </View>
   )
 }
