@@ -5,6 +5,7 @@ import { useProjectStore } from '~/stores/projectStore'
 import { Stack } from 'expo-router'
 import { Text, useTheme } from 'react-native-paper'
 import { Clock } from '~/components/Clock'
+import { GlobalFAB } from '~/components/GlobalFAB'
 
 export default function Home() {
   const projects = useProjectStore((state) => state.projects)
@@ -29,6 +30,8 @@ export default function Home() {
         }
         contentContainerStyle={{ paddingVertical: 8 }}
       />
+      <GlobalFAB />
+
     </View>
   )
 }

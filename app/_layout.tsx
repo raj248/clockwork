@@ -37,7 +37,6 @@ export default function RootLayout() {
           <Stack.Screen name="settings" options={{ title: 'Settings' }} />
           <Stack.Screen name="details" options={{ title: 'Details' }} />
         </Stack>
-        <GlobalFAB />
 
       </SafeAreaView>
     </PaperProvider>

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { Text, Button, Dialog, Portal, TextInput, useTheme, Menu, Divider } from 'react-native-paper'
+import { Text, Button, Dialog, Portal, TextInput, useTheme, Menu } from 'react-native-paper'
 import { useTimerStore } from '~/stores/timerStore'
 import { useSessionStore } from '~/stores/sessionStore'
 import { useProjectStore } from '~/stores/projectStore'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import uuid from 'react-native-uuid'
+
+import { AnimatedBackground } from '~/components/AnimatedBackground'
+import { GradientProgressRing } from '~/components/GradientProgressRing'
 
 export default function TimerScreen() {
   const theme = useTheme()
@@ -57,7 +60,6 @@ export default function TimerScreen() {
     }
   }, [])
 
-
   const handleStop = () => {
     stopTimer()
     setVisible(true)
@@ -81,10 +83,39 @@ export default function TimerScreen() {
     router.back()
   }
 
+  const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0')
+  const seconds = (elapsed % 60).toString().padStart(2, '0')
+  const progress = (elapsed % 60) / 60 // for progress ring
+
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text variant="displayMedium">{Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, '0')}</Text>
-      <Button mode="contained" onPress={handleStop} style={{ marginTop: 20 }}>
+    <View className="flex-1 justify-center items-center bg-background">
+      <AnimatedBackground />
+
+      <View className="absolute items-center justify-center">
+        <GradientProgressRing
+          progress={progress}
+          size={220}
+          strokeWidth={10}
+        />
+        <Text
+          variant="displayLarge"
+          className={`absolute font-mono ${theme.dark ? 'text-white' : 'text-black'
+            }`}
+          style={{
+            textShadowColor: theme.dark ? '#06b6d4aa' : '#3b82f6aa',
+            textShadowOffset: { width: 0, height: 0 },
+            textShadowRadius: 6,
+          }}
+        >
+          {minutes}:{seconds}
+        </Text>
+      </View>
+
+      <Button
+        mode="contained"
+        onPress={handleStop}
+        className="mt-8 z-10"
+      >
         Stop
       </Button>
 
@@ -93,47 +124,45 @@ export default function TimerScreen() {
           <Dialog.Title>Save Session</Dialog.Title>
           <Dialog.Content>
             {!selectedProjectId && (
-              <>
-                <Menu
-                  visible={projectMenuVisible}
-                  onDismiss={() => setProjectMenuVisible(false)}
-                  anchor={
-                    <Button
-                      mode="outlined"
-                      onPress={() => setProjectMenuVisible(true)}
-                      style={{ marginBottom: 8 }}
-                    >
-                      {selectedProjectId
-                        ? projects.find((p) => p.id === selectedProjectId)?.description || 'Select Project'
-                        : 'Select Project'}
-                    </Button>
-                  }
-                >
-                  {projects.map((project) => (
-                    <Menu.Item
-                      key={project.id}
-                      onPress={() => {
-                        setSelectedProjectId(project.id)
-                        setProjectMenuVisible(false)
-                      }}
-                      title={project.description}
-                    />
-                  ))}
-                </Menu>
-              </>
+              <Menu
+                visible={projectMenuVisible}
+                // onDismiss={() => setProjectMenuVisible(false)}
+                anchor={
+                  <Button
+                    mode="outlined"
+                    onPress={() => setProjectMenuVisible(true)}
+                    className="mb-2"
+                  >
+                    {selectedProjectId
+                      ? projects.find((p) => p.id === selectedProjectId)?.description || 'Select Project'
+                      : 'Select Project'}
+                  </Button>
+                }
+              >
+                {projects.map((project) => (
+                  <Menu.Item
+                    key={project.id}
+                    onPress={() => {
+                      setSelectedProjectId(project.id)
+                      // setProjectMenuVisible(false)
+                    }}
+                    title={project.description}
+                  />
+                ))}
+              </Menu>
             )}
 
             <TextInput
               label="Title"
               value={title}
               onChangeText={setTitle}
-              style={{ marginBottom: 8 }}
+              className="mb-2"
             />
             <TextInput
               label="Note"
               value={note}
               onChangeText={setNote}
-              style={{ marginBottom: 8 }}
+              className="mb-2"
             />
 
             <Menu
@@ -143,7 +172,7 @@ export default function TimerScreen() {
                 <Button
                   mode="outlined"
                   onPress={() => setTagMenuVisible(true)}
-                  style={{ marginBottom: 8 }}
+                  className="mb-2"
                 >
                   {tag ? `#${tag}` : 'Select Tag'}
                 </Button>
