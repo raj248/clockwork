@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Text, useTheme } from 'react-native-paper'
-import { GradientProgressRing } from './GradientProgressRing'
+import { BreathingSoftBubble } from './BreathingSoftBubble'
 
 const size = 220
 const strokeWidth = 8
@@ -19,12 +19,9 @@ export const Clock = () => {
   const progress = seconds / 60
 
   return (
-    <View className="items-center justify-center my-8">
-      <GradientProgressRing
-        progress={progress}
-        size={size}
-        strokeWidth={strokeWidth}
-      />
+    <View className="flex-1 items-center justify-center my-8">
+      <BreathingSoftBubble size={240} />
+
       <Text
         variant="displaySmall"
         className={`absolute text-center font-mono tracking-widest ${theme.dark ? 'text-white' : 'text-black'
